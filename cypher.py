@@ -31,6 +31,7 @@ def transposition(key, phrase):
     return "".join(encryptedPhrase)
 
 def encrypt(firstKey, secondKey, phrase):
+    phrase = phrase.replace(" ", "")
     offset = ord("a")
     limit = ord("z")
     encryptedPhrase = []
@@ -122,8 +123,6 @@ phrase = "countless path one destination"
 vigKey = "secretkey"
 
 transKey = "secondkey"
-
-phrase = phrase.replace(" ", "")
 
 print(phrase)
 
