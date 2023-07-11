@@ -48,17 +48,47 @@ def stringToXor(string, key):
         output.append(decimalXor)
     return output
 
-# code = [92,113,120,120,123,52,67,123,102,120,112,53] 
-# print(code)
-# key = decimalToBinary(53)
-# translatedWord = []
-# for number in code:
-#     bin = decimalToBinary(number)
-#     xor = compare(key, bin)
-#     decimal = binaryToDecimal(xor)
-#     letter = asciiToLetter(decimal)
-#     translatedWord.append(letter)
-# print(''.join(translatedWord))
+code = "92113120120123526712310212011253"
 
-for i in range(255):
-    print(i)
+def decrypt(code, key):
+    key = decimalToBinary(key)
+    translatedWord = []
+    for number in code:
+        bin = decimalToBinary(number)
+        xor = compare(key, bin)
+        decimal = binaryToDecimal(xor)
+        letter = asciiToLetter(decimal)
+        if ord(letter) < 32:
+            return
+        translatedWord.append(letter)
+    return ''.join(translatedWord)
+
+# for i in range(255):
+#     print(i)
+def guess(code):
+    for i in range(128):
+        decrypted = decrypt(code, i)
+        if decrypted != None:
+            print("Key: " + str(i) + " " + decrypted)
+
+
+def splitStrings(code):
+    totalStrings = []
+    testString = []
+    doTheSplit(code, totalStrings, testString)
+    return totalStrings
+
+def doTheSplit(code, totalStrings, testString):
+    if len(code) == 0:
+        totalStrings.append(testString)
+        return
+    for i in range(0, min(3, len(code))):
+        newTestString = testString.copy()
+        newCode = int(code[0:i+1])
+        if newCode < 128:
+            newTestString.append(int(code[0:i+1]))
+            doTheSplit(code[i+1:], totalStrings, newTestString)
+
+strings = splitStrings("144373738105")
+for string in strings:
+    guess(string)
